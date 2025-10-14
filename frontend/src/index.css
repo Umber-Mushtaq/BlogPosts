@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-buttonB: var(--dark-blue);
+  --color-buttonT: var(--sky-blue);
+  --color-darkbg: var(--dark-sky);
+  --color-lightbg: var(--light-sky);
+  --color-heading: var(--light-blue);
+  --color-headingS: var(--teal);
+  --color-text: var(--gray-black);
+}
+
+:root {
+  --dark-blue: #132a35;
+  --sky-blue: #eff2f2;
+  --dark-sky: #d8ebef;
+  --gray-black: #607376;
+  --light-sky: #b3d2da;
+  --teal: #385f6a;
+}
