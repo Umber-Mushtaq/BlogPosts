@@ -2,19 +2,23 @@
 
 @theme {
   --color-buttonB: var(--dark-blue);
-  --color-buttonT: var(--sky-blue);
-  --color-darkbg: var(--dark-sky);
-  --color-lightbg: var(--light-sky);
-  --color-heading: var(--light-blue);
-  --color-headingS: var(--teal);
-  --color-text: var(--gray-black);
+  --color-buttonT: var(--white);
+  --color-border: var(--sky-blue);
+  --color-buttonL: var(--light-blue);
+  --color-textB: var(--gray-black);
+  --color-textC: var(--light-sky);
 }
 
 :root {
-  --dark-blue: #132a35;
-  --sky-blue: #eff2f2;
-  --dark-sky: #d8ebef;
-  --gray-black: #607376;
-  --light-sky: #b3d2da;
-  --teal: #385f6a;
+  --dark-blue: #043674;
+  --white: #fcfefc;
+  --sky-blue: #c7c6fc;
+  --gray-black: #697183;
+  --light-blue: #046ed4;
+  --light-sky: #a4c6fc;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #fcfefc;
 }

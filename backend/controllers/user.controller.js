@@ -61,10 +61,26 @@ export const LoginUser = async (req, res) => {
       .json({
         success: true,
         message: "Login Successfull",
+        user: u,
       });
   } catch (error) {
     console.log(error);
     return sendResponse(res, 400, false, "Server Error User Login");
+  }
+};
+
+export const LogoutUser = async (req, res) => {
+  try {
+    res.cookie("token", "", {
+      httpOnly: true,
+      secure: true,
+      sameSite: true,
+      expiresIn: new Date(0), // expire immediately
+    });
+    return sendResponse(res, 200, true, "User Loged Out Successfully");
+  } catch (error) {
+    console.log(error);
+    sendResponse(res, 400, false, "Server error Logout User");
   }
 };
 
