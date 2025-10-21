@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
 import Likes from "./Likes";
+import PostDate from "./PostDate";
+import { FaSearch } from "react-icons/fa";
 
 const Post = ({ posts }) => {
   return (
-    <div className='w-2xl px-10 py-10'>
+    <div className=' px-10 py-5'>
+      <div className='flex p-3 border-2 border-border justify-between items-center rounded-full mb-5'>
+        <input type='text' placeholder='Search Post' />
+        <FaSearch className='mx-2' />
+      </div>
       {posts?.length > 0 ? (
         <>
-          <div className='grid grid-cols-1 gap-10 mt-5'>
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
             {posts.map((post) => (
               <div
                 key={post._id}
@@ -17,7 +23,25 @@ const Post = ({ posts }) => {
                   alt={post.title}
                   className='w-full h-45 object-cover'
                 />
-                <div className='px-3 py-3 flex flex-col gap-3'>
+
+                <div className='px-3 py-3  flex justify-between items-center text-buttonL'>
+                  <Link
+                    to={`/main/author/${post.author._id}`}
+                    className='flex items-center justify-center gap-2 hover:cursor-pointer'
+                  >
+                    <img
+                      src={post.author.photoUrl}
+                      alt='img'
+                      className='w-10 h-10 rounded-full object-cover'
+                    />
+                    {post.author.firstName}
+                  </Link>
+                  <h1 className='text-sm text-buttonL'>
+                    <PostDate createdAt={post.createdAt} />
+                  </h1>
+                </div>
+
+                <div className='px-3 pb-3 flex flex-col gap-3'>
                   <div className='flex-col md:flex md:flex-row justify-between items-center'>
                     <h1 className='text-2xl text-buttonL font-medium tracking-wide'>
                       {post.title}
@@ -25,23 +49,15 @@ const Post = ({ posts }) => {
                     <Likes id={post._id} likes={post.likes} />
                   </div>
 
-                  <div className='flex justify-between items-center py-2 text-buttonL'>
-                    <h1 className='text-sm text-textC'>
-                      {new Date(post.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </h1>
+                  <p className='text-sm text-textB '>
+                    {post.content.split(" ").slice(0, 10).join(" ")}...
                     <Link
-                      to={`/main/${post.author._id}`}
-                      className='hover:cursor-pointer'
+                      to={`/main/post/${post._id}`}
+                      className='text-buttonL cursor-pointer'
                     >
-                      {post.author.firstName} {post.author.lastName}
+                      Read More
                     </Link>
-                  </div>
-
-                  <p className='text-sm text-textB '>{post.content}</p>
+                  </p>
                 </div>
               </div>
             ))}

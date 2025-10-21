@@ -19,13 +19,12 @@ export const CreatePost = async (req, res) => {
 export const UpdatePost = async (req, res) => {
   try {
     const { id } = req.params; // post ID from the URL
-    const { title, category, content, imageUrl } = req.body;
-
     // find post
     const post = await Post.findById(id);
     if (!post) return sendResponse(res, 404, false, "Post not found");
 
     // update fields (only if provided)
+    const { title, category, content, imageUrl } = req.body;
     post.title = title || post.title;
     post.category = category || post.category;
     post.content = content || post.content;
@@ -33,10 +32,38 @@ export const UpdatePost = async (req, res) => {
 
     await post.save();
 
-    sendResponse(res, 200, true, "Post updated successfully", post);
+    return sendResponse(res, 200, true, "Post updated successfully", post);
   } catch (error) {
     console.error(error);
-    sendResponse(res, 400, false, "Server error updating post");
+    return sendResponse(res, 400, false, "Server error updating post");
+  }
+};
+
+export const DeletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findByIdAndDelete(id);
+    if (!post) return sendResponse(res, 400, false, "Post not exists");
+    return sendResponse(res, 200, true, "Post Deleted Successfully");
+  } catch (error) {
+    console.log(error);
+    return sendResponse(res, 400, false, "Server Error Deleting Post");
+  }
+};
+
+export const GetSinglePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findById(id);
+    if (!post) return sendResponse(res, 400, false, "Post not found");
+    return res.status(200).json({
+      success: true,
+      message: "Post got successfylly",
+      post,
+    });
+  } catch (error) {
+    console.log(error);
+    return sendResponse(res, 400, false, "Server error getting single post");
   }
 };
 
@@ -44,7 +71,7 @@ export const GetAllPosts = async (req, res) => {
   try {
     const posts = await Post.find().populate(
       "author",
-      "firstName lastName email"
+      "firstName lastName email photoUrl"
     );
     return res.status(200).json({
       success: true,
@@ -60,7 +87,7 @@ export const GetAllPosts = async (req, res) => {
 export const GetRecentPosts = async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("author", "firstName lastName email")
+      .populate("author", "firstName lastName email photoUrl")
       .sort({ createdAt: -1 });
     return res.status(200).json({
       success: true,
@@ -73,10 +100,53 @@ export const GetRecentPosts = async (req, res) => {
   }
 };
 
+export const GetPostsByAuthorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const posts = await Post.find({ author: id })
+      .populate("author", "firstName lastName email photoUrl")
+      .sort({ createdAt: -1 });
+
+    if (!posts || posts.length === 0) {
+      return sendResponse(res, 400, false, "No posts found for this author");
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Posts found of the author",
+      posts,
+    });
+  } catch (error) {
+    console.log(error);
+    return sendResponse(res, 400, false, "Server error getting author posts");
+  }
+};
+
+export const GetYourPosts = async (req, res) => {
+  try {
+    console.log("decoded user : ", req.user);
+    const id = req.user.id;
+    const posts = await Post.find({ author: id })
+      .populate("author", "firstName lastName email photoUrl")
+      .sort({ createdAt: -1 });
+
+    if (!posts || posts.length === 0) {
+      return sendResponse(res, 400, false, "No posts found for this author");
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Posts found of the author",
+      posts,
+    });
+  } catch (error) {
+    console.log(error);
+    return sendResponse(res, 400, false, "Server error getting author posts");
+  }
+};
+
 export const GetTrendingPosts = async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("author", "firstName lastName email")
+      .populate("author", "firstName lastName email photoUrl")
       .sort({ likes: -1 });
     return res.status(200).json({
       success: true,
@@ -134,7 +204,7 @@ export const CategoryPosts = async (req, res) => {
     const { category } = req.params;
     const posts = await Post.find({ category }).populate(
       "author",
-      "firstName lastName email"
+      "firstName lastName email photoUrl"
     );
     return res.status(200).json({
       success: true,

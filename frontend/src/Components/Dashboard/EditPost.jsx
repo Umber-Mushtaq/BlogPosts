@@ -1,7 +1,119 @@
-import React from "react";
+import { useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { EditPostApiCall } from "../PostPages/PostApiCalls";
 
 const EditPost = () => {
-  return <div>EditPost</div>;
+  const categories = ["Technology", "Lifestyle", "Education", "Entertainment"];
+  const { id } = useParams();
+
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [content, setContent] = useState("");
+  const fileInputRef = useRef();
+
+  const handleImageSelection = (e) => {
+    const selectedImage = e.target.files[0];
+    const url = "/assets/" + selectedImage.name;
+    console.log(url);
+    setImageUrl(url);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (title && category && imageUrl && content)
+      EditPostApiCall(id, { title, category, content, imageUrl });
+  };
+
+  return (
+    <div className='px-10 py-5 w-full flex  bg-backgroundL'>
+      <div className='w-full'>
+        <h1 className='text-buttonL text-4xl tracking-wide font-medium'>
+          Edit Post
+        </h1>
+        <div className='border-2 border-border rounded-md mt-3 text-textB py-2 px-2'>
+          <img
+            src={imageUrl}
+            alt='img'
+            className='w-auto h-auto object-cover'
+          />
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div className='py-3 px-3 mt-2 border-2 border-border rounded-md'>
+            <div className='flex-col gap-3 md:flex md:flex-row md:gap-0  justify-between items-center'>
+              <label className='mb-2 md:mb-0 block text-gray-600'>
+                Upload Image
+              </label>
+              <div className='bg-border text-black text-center py-3 px-4 rounded-md cursor-pointer'>
+                <input
+                  type='file'
+                  accept='image/*'
+                  ref={fileInputRef}
+                  onChange={handleImageSelection}
+                  className='hidden hover:cursor-pointer'
+                />
+                <button
+                  type='button'
+                  className='hover:cursor-pointer'
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  Upload image
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className='py-3 px-3 mt-2 border-2 border-border rounded-md'>
+            <input
+              type='text'
+              placeholder='Enter Post Title'
+              value={title}
+              required
+              onChange={(e) => setTitle(e.target.value)}
+              className='border-none outline-none w-full'
+            />
+          </div>
+
+          <div className='py-3 px-3 mt-2 border-2 border-border rounded-md'>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className='w-full border-none outline-none text-textB'
+            >
+              <option value='' disabled>
+                Choose a category
+              </option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className='flex items-center border-2 border-border py-3 px-3 mt-2 rounded-md w-full'>
+            <textarea
+              className='resize-y w-full text-text border-none outline-none '
+              rows={8}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              type='text'
+              name='content'
+              placeholder='Enter Content....'
+            />
+          </div>
+
+          <button
+            type='submit'
+            className='py-2 px-3 mt-2 rounded-md w-full hover:cursor-pointer hover:bg-darkB bg-buttonL text-buttonT font-medium tracking-wide'
+          >
+            Publish
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default EditPost;

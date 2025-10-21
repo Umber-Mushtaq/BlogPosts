@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@400;500&family=Fira+Code&display=swap");
 
 @theme {
   --color-buttonB: var(--dark-blue);
@@ -7,6 +8,15 @@
   --color-buttonL: var(--light-blue);
   --color-textB: var(--gray-black);
   --color-textC: var(--light-sky);
+
+  --color-backgroundL: var(--Anti-flash-white);
+  --color-backgroundD: var(--Lavender);
+  --color-lightB: var(--Periwinkle);
+  --color-lightBT: var(--Cataline-blue);
+  --color-darkB: var(--Palatinate-blue);
+  --color-title: var(--black);
+  --color-content: var(--Anti-flash-white-2);
+  --color-heading: var(--Cataline-blue);
 }
 
 :root {
@@ -16,9 +26,18 @@
   --gray-black: #697183;
   --light-blue: #046ed4;
   --light-sky: #a4c6fc;
+
+  --Anti-flash-white: #efefef;
+  --Lavender: #dadaf4;
+  --Periwinkle-: #d3d6f9;
+  --Palatinate-blue: #4f3bf5;
+  --Black: #000000;
+  --Anti-flash-white-2: #eeeef0;
+  --Light-periwinkle: #c7c6fc;
+  --Cataline-blue: #043674;
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: #fcfefc;
+  background-color: #efefef;
 }

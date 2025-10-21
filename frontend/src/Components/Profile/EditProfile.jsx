@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   FaBriefcase,
   FaEnvelope,
@@ -14,7 +14,7 @@ const Styles = {
   iconStyle: "text-1xl text-border",
   divStyle:
     "flex items-center border-1 border-border py-1 px-2 rounded-md w-full",
-  inputTextStyle: "text-text border-none outline-none py-2 px-3",
+  inputTextStyle: "text-text border-none outline-none py-2 px-3 w-full",
 };
 
 const EditProfile = () => {
@@ -25,6 +25,15 @@ const EditProfile = () => {
   const [occupation, setoccupation] = useState("");
   const [linkedin, setlinkedin] = useState("");
   const [github, setgithub] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+  const fileInputRef = useRef();
+
+  const handleImageSelection = (e) => {
+    const selectedImage = e.target.files[0];
+    const url = "/assets/" + selectedImage.name;
+    console.log(url);
+    setPhotoUrl(url);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,7 +44,8 @@ const EditProfile = () => {
       bio &&
       occupation &&
       linkedin &&
-      github
+      github &&
+      photoUrl
     ) {
       EditProfileApiCall(
         firstName,
@@ -43,6 +53,7 @@ const EditProfile = () => {
         email,
         bio,
         occupation,
+        photoUrl,
         linkedin,
         github
       );
@@ -51,15 +62,46 @@ const EditProfile = () => {
 
   return (
     <div className='py-10 px-10 w-full flex justify-center items-center'>
-      <div className='w-2xl'>
-        <h1 className='text-3xl text-buttonB font-medium tracking-wide mb-2'>
+      <div className='w-full'>
+        <h1 className='text-3xl text-buttonL font-medium tracking-wide mb-2'>
           Edit Your Profile
         </h1>
+        <div className='border-1 border-border rounded-md mt-3 text-textB py-2 px-2'>
+          <img
+            src={photoUrl}
+            alt='img'
+            className='w-auto h-auto object-cover'
+          />
+        </div>
 
         <form
           onSubmit={handleSubmit}
           className='flex flex-col justify-center items-center gap-3'
         >
+          <div className='py-3 px-3 mt-2 border-1 border-border w-full rounded-md'>
+            <div className='flex-col gap-3 md:flex md:flex-row md:gap-0  justify-between items-center'>
+              <label className='mb-2 md:mb-0 block text-gray-600'>
+                Upload Image
+              </label>
+              <div className='bg-border text-black text-center py-3 px-4 rounded-md cursor-pointer'>
+                <input
+                  type='file'
+                  accept='image/*'
+                  ref={fileInputRef}
+                  onChange={handleImageSelection}
+                  className='hidden hover:cursor-pointer'
+                />
+                <button
+                  type='button'
+                  className='hover:cursor-pointer'
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  Upload image
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className={Styles.divStyle}>
             <h1 className={Styles.iconStyle}>
               <FaUser />

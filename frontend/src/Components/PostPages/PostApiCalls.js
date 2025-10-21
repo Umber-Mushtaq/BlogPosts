@@ -1,5 +1,5 @@
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const BASE_URL = "http://localhost:4000/api/v1/posts";
 
@@ -14,11 +14,30 @@ const api = axios.create({
 export const CreatePostApiCall = async (data) => {
   try {
     const res = await api.post("/create", data);
-    console.log(res.data.message);
     toast.success(res?.data?.message);
   } catch (error) {
     console.log(error?.response?.data?.message);
     toast.error(error?.response?.data?.message || "Network Error");
+  }
+};
+
+export const EditPostApiCall = async (id, data) => {
+  try {
+    const res = await api.put(`/update/${id}`, data);
+    toast.success(res?.data?.message);
+  } catch (error) {
+    console.log(error?.response?.data?.message);
+    toast.error(error?.response?.data?.message || "Network Error");
+  }
+};
+
+export const DeletePostApiCall = async (id) => {
+  try {
+    const res = await api.delete(`/delete/${id}`);
+    toast(res?.data?.message);
+  } catch (error) {
+    console.log(error?.response?.data?.message);
+    toast.error(error?.response?.data?.message);
   }
 };
 
@@ -82,5 +101,25 @@ export const GetCategoryPostsApiCall = async (category) => {
   } catch (error) {
     console.log(error?.response?.data?.message);
     return { success: false, message, data: [] };
+  }
+};
+
+export const GetYourPostsApiCall = async () => {
+  try {
+    const res = await api.get("/my");
+    return { success: true, data: res?.data?.posts };
+  } catch (error) {
+    console.log(error?.response?.data?.message);
+    return { success: false, data: [] };
+  }
+};
+
+export const GetSinglePostApiCall = async (id) => {
+  try {
+    const res = await api.get(`/${id}`);
+    return { success: true, data: res?.data?.post };
+  } catch (error) {
+    console.log(error?.response?.data?.message);
+    return { success: false, data: {} };
   }
 };

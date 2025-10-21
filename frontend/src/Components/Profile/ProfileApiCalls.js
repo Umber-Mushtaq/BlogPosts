@@ -16,6 +16,7 @@ export const EditProfileApiCall = async (
   email,
   bio,
   occupation,
+  photoUrl,
   linkedin,
   github
 ) => {
@@ -26,6 +27,7 @@ export const EditProfileApiCall = async (
       email,
       bio,
       occupation,
+      photoUrl,
       linkedin,
       github,
     });
