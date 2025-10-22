@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { GetSinglePostApiCall } from "./PostApiCalls";
 import PostDate from "./PostDate";
 import Likes from "./Likes";
+import CommentsPage from "../Comments/CommentsPage";
 
 const SinglePost = () => {
   const [post, setPost] = useState({});
@@ -18,13 +19,13 @@ const SinglePost = () => {
     fetchSinglePost();
   }, [id]);
   return (
-    <>
+    <div>
       {post ? (
         <div className='flex flex-col py-5 px-10'>
           <img
             src={post.imageUrl}
             alt='img'
-            className='w-full h-100 object-center'
+            className='w-full h-100 object-center rounded-lg shadow-md'
           />
           <h1 className='text-3xl font-medium text-buttonL tracking-wide py-5'>
             {post.title}
@@ -38,7 +39,8 @@ const SinglePost = () => {
           Loading...
         </h1>
       )}
-    </>
+      <CommentsPage postId={id} />
+    </div>
   );
 };
 

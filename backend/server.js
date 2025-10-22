@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./database/db.js";
 import userRoute from "./Routes/user.routes.js";
 import postRoute from "./Routes/post.routes.js";
+import commentRoute from "./Routes/comment.routes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors"; // ✅ add this
 
@@ -29,6 +30,7 @@ app.use(cookieParser());
 // ✅ Routes
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/posts", postRoute);
+app.use("/api/v1/comments", commentRoute);
 
 app.listen(PORT, () => {
   console.log(`✅ Server Listening on port ${PORT}`);
