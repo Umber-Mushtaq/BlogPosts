@@ -5,7 +5,7 @@ import userRoute from "./Routes/user.routes.js";
 import postRoute from "./Routes/post.routes.js";
 import commentRoute from "./Routes/comment.routes.js";
 import cookieParser from "cookie-parser";
-import cors from "cors"; // ✅ add this
+import cors from "cors";
 
 dotenv.config();
 
@@ -14,24 +14,21 @@ connectDB();
 
 const PORT = process.env.PORT || 4000;
 
-// ✅ CORS setup — must come BEFORE routes
 app.use(
   cors({
-    origin: "http://localhost:5173", // your React app’s URL
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // if you’re using cookies or tokens
+    credentials: true,
   })
 );
 
-// ✅ Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ Routes
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/posts", postRoute);
 app.use("/api/v1/comments", commentRoute);
 
 app.listen(PORT, () => {
-  console.log(`✅ Server Listening on port ${PORT}`);
+  console.log(`Server Listening on port ${PORT}`);
 });
